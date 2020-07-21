@@ -77,6 +77,25 @@ export default class PathfindingVisualizer extends Component {
         this.animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder);
     }
 
+    clearGrid(grid) {
+        for (let row = 0; row < 20; row++) {
+            for (let col = 0; col < 50; col++) {
+                let className = '';
+
+                if (grid[row][col].isStart) {
+                    className = 'node node-start';
+                } else if (grid[row][col].isFinish) {
+                    className = 'node node-finish';
+                } else {
+                    className = 'node';
+                }
+                document.getElementById(
+                    `node-${row}-${col}`
+                ).className = className;
+            }
+        }
+    }
+
     render() {
         const { grid, mouseIsPressed } = this.state;
 
@@ -84,6 +103,9 @@ export default class PathfindingVisualizer extends Component {
             <>
                 <button onClick={() => this.visualizeDijkstra()}>
                     Visualize Dijkstra's Algorithm
+                </button>
+                <button onClick={() => this.clearGrid(this.state.grid)}>
+                    Clear
                 </button>
                 <div className="grid">
                     {grid.map((row, rowIdx) => {
