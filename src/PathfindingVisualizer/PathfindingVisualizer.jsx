@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Node from './Node/Node';
 import { dijkstra, getNodesInShortestPathOrder } from '../algorithms/dijkstra';
+import bfs from '../algorithms/bfs';
 
 import './PathfindingVisualizer.css';
 
@@ -77,6 +78,28 @@ export default class PathfindingVisualizer extends Component {
         this.animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder);
     }
 
+    visualizeBFS() {
+        const { grid } = this.state;
+        const startNode = { row: START_NODE_ROW, col: START_NODE_COL };
+        const endNode = { row: FINISH_NODE_ROW, col: FINISH_NODE_COL };
+        let { path, visited } = bfs(grid, startNode, endNode);
+
+        for (let i = 0; i <= visited.length; i++) {
+            if (i === visited.length) {
+                setTimeout(() => {
+                    this.animateShortestPath(path);
+                }, 5 * i);
+                return;
+            }
+            setTimeout(() => {
+                const node = visited[i];
+                document.getElementById(
+                    `node-${node.row}-${node.col}`
+                ).className = 'node node-visited';
+            }, 5 * i);
+        }
+    }
+
     clearGrid(grid) {
         for (let row = 0; row < 20; row++) {
             for (let col = 0; col < 50; col++) {
@@ -106,6 +129,9 @@ export default class PathfindingVisualizer extends Component {
             <>
                 <button onClick={() => this.visualizeDijkstra()}>
                     Visualize Dijkstra's Algorithm
+                </button>
+                <button onClick={() => this.visualizeBFS()}>
+                    Visualize BFS Algorithm
                 </button>
                 <button onClick={() => this.clearGrid(this.state.grid)}>
                     Clear
