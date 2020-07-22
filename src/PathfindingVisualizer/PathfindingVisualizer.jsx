@@ -94,6 +94,9 @@ export default class PathfindingVisualizer extends Component {
                 ).className = className;
             }
         }
+
+        const ogGrid = getInitialGrid();
+        this.setState({ grid: ogGrid });
     }
 
     render() {
